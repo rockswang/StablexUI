@@ -8,7 +8,7 @@
 
 define('SRC_ROOT', '../src/');
 define('DOC_ROOT', 'src/');
-define('DOC_BASE_URL', '/ui/doc/');
+define('DOC_BASE_URL', '/doc/');
 
 $urls = array(
     'manual'  => DOC_BASE_URL.'##type#.html',
@@ -16,6 +16,8 @@ $urls = array(
     'nme'     => DOC_BASE_URL.'#http://nme.io/api/types/#type#.html',
     'default' => DOC_BASE_URL.'#http://haxe.org/api/#type#'
 );
+
+$hide = array("ru.stablex.ui.ClassBuilder");
 
 file_put_contents(
     'doc/menu.html',
@@ -32,6 +34,8 @@ file_put_contents(
 
 
 function generate($srcPath, $dstPath = 'doc/', $imports = array()){
+    global $hide;
+
     if( !file_exists($dstPath) ){
         mkdir($dstPath, 0777, true);
     }
@@ -57,6 +61,10 @@ function generate($srcPath, $dstPath = 'doc/', $imports = array()){
         $import = preg_replace('/\//', '.', $import);
         $import = preg_replace('/^([^a-zA-Z]*)/', '', $import);
         $import = preg_replace('/\.hx$/', '', $import);
+
+        if( in_array($import, $hide) ){
+            continue;
+        }
 
         $menu .= "<li class=\"class\"><a href=\"". url($import) ."\" class=\"class\">". basename($fname, '.hx') ."</a></li>\n";
 
@@ -132,7 +140,7 @@ function genDoc($fname, $imports = array()){
                 $definition = preg_replace('/\{|;/', '', $lines[$i + 1]);
                 $doc .= definition($definition, $imports) . comment($comment, $imports);
             #classes
-            }elseif( $comment && $i + 1 < $cLines && preg_match('/class|interface/', $lines[$i + 1]) ){
+            }elseif( $comment && $i + 1 < $cLines && preg_match('/class|interface/', $lines[$i + 1]) && !preg_match('/\}/', $lines[$i + 1]) ){
                 if( $classOpened ) $doc .="</div>\n";
 
                 $definition = preg_replace('/\{|;/', '', $lines[$i + 1]);
@@ -194,9 +202,9 @@ function comment($str, $imports = array()){
 
 
 function definition($str, $imports = array()){
-    //$str = preg_replace('/([()<>\[\]])/', '<span class="bracket">\\1</span>', $str);
     $str = preg_replace('/</', '&lt;', $str);
     $str = preg_replace('/>/', '&gt;', $str);
+    $str = str_replace('#if haxe3 macro #else @:macro #end', '<span class="macro">macro</span>', $str);
     $str = preg_replace('/((var|function)\s*)([a-zA-Z0-9_]+)(\s*(\:|\())/', '\\1<span class="definitionName">\\3</span>\\4', $str);
     $str = preg_replace('/(override|dynamic|static|public|private|inline|var|function)/', '<span class="\\1">\\1</span>', $str);
     $str = preg_replace('/(@\:[a-zA-Z0-9_]+)/', '<span class="macro">\\1</span>', $str);
@@ -252,7 +260,7 @@ function url($classpath){
     $url = implode('/', $parts);
 
     #hack for actuate
-    if( strpos($classpath, 'com.eclecticdesignstudio.motion') !== false ){
+    if( strpos($classpath, 'motion') !== false ){
         $url = DOC_BASE_URL.'#http://haxe.org/com/libs/actuate';
 
     }elseif( isset($urls[ $parts[0] ]) ){

@@ -19,6 +19,8 @@ class Main extends nme.display.Sprite{
         Lib.current.stage.align     = StageAlign.TOP_LEFT;
         Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
+        UIBuilder.regClass("ru.stablex.ui.widgets.Holder");
+
         //initialize StablexUI
         UIBuilder.init();
 
