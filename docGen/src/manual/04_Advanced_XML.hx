@@ -87,7 +87,7 @@ var widget : ru.stablex.ui.widgets.Button = ... // UIBuilder actions to create w
 if( widget.skin == null ) widget.skin = new ru.stablex.ui.skins.Paint();
 cast(widget.skin, ru.stablex.ui.skins.Paint).color  = 0x002200;
 widget.text = 'Click me';
-widget.addEventListener(nme.events.MouseEvent.CLICK, function(event:nme.events.Event){
+widget.addEventListener(nme.events.MouseEvent.CLICK, function(event:nme.events.MouseEvent){
     trace('Oops! You clicked it again!');'
 })
 widget.skin = skin;
@@ -96,16 +96,21 @@ widget.onCreate();
 </haxe>
 
 There are some predefined handler types for most frequently used events:
-
+(may be out of date, see <type>ru.stablex.ui.UIBuilder</type>.init() source code for full list)
 <haxe>
-on-enterFrame -&gt; nme.events.Event.ENTER_FRAME
-on-click      -&gt; nme.events.MouseEvent.CLICK
-on-mouseDown  -&gt; nme.events.MouseEvent.MOUSE_DOWN
-on-mouseUp    -&gt; nme.events.MouseEvent.MOUSE_UP
-on-display    -&gt; nme.events.Event.ADDED_TO_STAGE
-on-create     -&gt; ru.stablex.ui.events.WidgetEvent.CREATE
-on-free       -&gt; ru.stablex.ui.events.WidgetEvent.FREE
-on-resize     -&gt; ru.stablex.ui.events.WidgetEvent.RESIZE
+on-enterFrame  -&gt; nme.events.Event.ENTER_FRAME
+on-click       -&gt; nme.events.MouseEvent.CLICK
+on-mouseDown   -&gt; nme.events.MouseEvent.MOUSE_DOWN
+on-mouseUp     -&gt; nme.events.MouseEvent.MOUSE_UP
+on-display     -&gt; nme.events.Event.ADDED_TO_STAGE
+on-create      -&gt; ru.stablex.ui.events.WidgetEvent.CREATE
+on-free        -&gt; ru.stablex.ui.events.WidgetEvent.FREE
+on-resize      -&gt; ru.stablex.ui.events.WidgetEvent.RESIZE
+on-scrollStart -&gt; ru.stablex.ui.events.WidgetEvent.SCROLL_START
+on-scrollStop  -&gt; ru.stablex.ui.events.WidgetEvent.SCROLL_STOP
+on-drag        -&gt; ru.stablex.ui.events.DndEvent.DRAG
+on-drop        -&gt; ru.stablex.ui.events.DndEvent.DROP
+on-receiveDrop -&gt; ru.stablex.ui.events.DndEvent.RECEIVE
 </haxe>
 */
 
@@ -117,7 +122,8 @@ Let's register shortcut for <type>nme.events.MouseEvent</type>.MOUSE_WHEEL event
 To complete this task, we need to execute following code before <type>ru.stablex.ui.UIBuilder</type>.init() :
 
 <haxe>
- ru.stablex.ui.UIBuilder.regEvent('mouseWheel', 'nme.events.MouseEvent.MOUSE_WHEEL');
+ //last argument is optional. See API for details.
+ ru.stablex.ui.UIBuilder.regEvent('mouseWheel', 'nme.events.MouseEvent.MOUSE_WHEEL', 'nme.events.MouseEvent');
 
 //initialize StablexUI
  ru.stablex.ui.UIBuilder.init();
@@ -138,7 +144,7 @@ var widget : ru.stablex.ui.widgets.Button = ... // UIBuilder actions to create w
 if( widget.skin == null ) widget.skin = new ru.stablex.ui.skins.Paint();
 cast(widget.skin, ru.stablex.ui.skins.Paint).color  = 0x002200;
 widget.text    = 'Use mouse wheel over me';
-widget.addEventListener(nme.events.MouseEvent.MOUSE_WHEEL, function(event:nme.events.Event){
+widget.addEventListener(nme.events.MouseEvent.MOUSE_WHEEL, function(event:nme.events.MouseEvent){
     trace('Oops! You wheel it again!');
 });
 widget.skin = skin;
@@ -165,7 +171,8 @@ to shorten haxe code in xml.
                and must be of <type>Class</type>&lt;<type>ru.stablex.ui.widgets.Widget</type>&gt;
 <span class="placeholder">@someArg</span>    - read section "Xml arguments" below.
 </pre>
-
+If you need to use characters '@', '#' or '$' without replacing them with placeholders code, you need
+to type these characters twice. E.g. "trace('It costs $$45')" will output "It costs $45".
 Let's investigate how these placeholders work in examples.
 
 <h3>$this</h3>
@@ -357,7 +364,7 @@ import nme.Lib;
 import ru.stablex.ui.UIBuilder;
 
 /**
-* StablexUI example created in this manual: http://stablex.ru/ui/doc#manual/04_Advanced_XML.html
+* StablexUI example created in this manual: http://ui.stablex.ru/doc#manual/04_Advanced_XML.html
 * Section: Xml arguments (`@someArg` placeholder)
 *
 */
@@ -379,6 +386,6 @@ class Main extends nme.display.Sprite{
 }//class Main
 </haxe>
 
-Build project or try <a href="/ui/demo/04_alert.swf" target="_blank">flash</a> version or <a href="/ui/demo/04_alert" target="_blank">html5</a>.
+Build project or try <a href="/demo/04_alert.swf" target="_blank">flash</a> version or <a href="/demo/04_alert" target="_blank">html5</a>.
 Full sample code is included in samples/04_arguments on <a href="https://github.com/RealyUniqueName/StablexUI" target="_blank">GitHub</a>.
 */
