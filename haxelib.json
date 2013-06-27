@@ -1,0 +1,15 @@
+{
+    "name"         : "stablexui",
+    "url"          : "http://ui.stablex.ru/doc",
+    "license"      : "MIT",
+    "tags"         : ["cross", "cpp", "flash", "html5", "ui"],
+    "description"  : "StablexUI is a crossplatform UI engine.",
+    "version"      : "1.0.1",
+    "releasenote"  : "Fix for #36 issue (github)",
+    "contributors" : ["RealyUniqueName"],
+    "dependencies" : {
+        "openfl"        : "",
+        "actuate"       : "",
+        "hscript"       : ""
+    }
+}
