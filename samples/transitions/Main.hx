@@ -4,6 +4,9 @@ import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.Lib;
 import ru.stablex.ui.UIBuilder;
+import ru.stablex.ui.widgets.Bmp;
+import ru.stablex.ui.widgets.Widget;
+import ru.stablex.ui.widgets.HBox;
 
 
 /**
@@ -16,14 +19,12 @@ class Main extends flash.display.Sprite{
     *
     */
     static public function main () : Void{
-        Lib.current.stage.align     = StageAlign.TOP_LEFT;
-        Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
         //initialize StablexUI
         UIBuilder.init();
 
-        //Create our floating UI
-        Lib.current.addChild(UIBuilder.buildFn('ui.xml')());
+        //Show main ui
+        Lib.current.addChild( UIBuilder.buildFn('ui.xml')() );
     }//function main()
 
 
